@@ -21,3 +21,7 @@ class Application(tk.Frame):
 		print data
 		print("Well shoot... there should be data here lol!!!")
 
+# Set Qualifiers
+root = tk.Tk()
+app = Application([1,2,3,4,5,6],master=root)
+app.mainloop()

@@ -1,0 +1,128 @@
+from Tkinter import *
+
+class display(Frame) :
+	def __init__(self, parent, **options) :
+		Frame.__init__(self, parent, options)
+
+		# creation of internal widgets (scrollbars, canvas)
+		self.xscrollbar = Scrollbar(self, orient=HORIZONTAL)
+		self.yscrollbar = Scrollbar(self)
+		self.canvas = Canvas(self, background="#888")
+
+		# connect srollbars
+		self.canvas.config(
+			xscrollcommand = self.xscrollbar.set,
+			yscrollcommand = self.yscrollbar.set )
+		self.xscrollbar.config(command=self.canvas.xview)
+		self.yscrollbar.config(command=self.canvas.yview)
+		self.items = []
+		self.max_item_width = 0
+		self.max_item_height = 0
+
+		self.bind("<Configure>", self.resize)
+		self.update_idletasks()
+		self.draw()
+
+	def resize(self, w) :
+		self.draw()
+
+	def add(self, message) :
+		widget = Label(self.canvas, background="#0F8", text=message)
+		self.items.append(widget)
+		self.max_item_width = max(self.max_item_width, widget.winfo_reqwidth())
+		self.max_item_height = max(self.max_item_height, widget.winfo_reqheight())
+		self.draw()
+
+	def draw_items(self) :
+		x_border = 10
+		y_border = 10
+		# compute the number of columns
+		w = self.winfo_width()
+		n_col = w/(x_border+self.max_item_width)
+		if n_col == 0 : n_col = 1
+		n = 0
+		self.canvas.delete("all")
+
+		x = x_border
+		y = y_border
+		for item in self.items :
+			id = self.canvas.create_window(x, y, window=item, anchor=NW, tags=("all",))
+			n = n+1
+			if n % n_col == 0 :
+				x = x_border
+				y = y+self.max_item_height+y_border
+			else :
+				x = x+self.max_item_width+x_border
+
+		self.canvas.config(scrollregion=self.canvas.bbox(ALL))
+
+	def draw_scrollbars(self) :
+		w = self.winfo_width()
+		h = self.winfo_height()
+		bbox = self.canvas.bbox(ALL)
+		if bbox != None :
+			bb_x0, bb_y0, bb_x1, bb_y1 = bbox
+		else :
+			# no scrollbar needed
+			self.yscrollbar.place_forget()
+			self.xscrollbar.place_forget()
+			return w, h
+
+		if h > bb_y1-bb_y0 :
+			# no y scrollbar needed
+			self.yscrollbar.place_forget()
+			if w < bb_x1-bb_x0 :
+				# x scrollbar needed
+				delta_y = self.xscrollbar.winfo_reqheight()
+				self.xscrollbar.place(anchor=SW, rely=1.0, relwidth=1)
+				h = h-delta_y
+				if h > bb_y1-bb_y0 :
+					# y scrollbar need finally
+					self.yscrollbar.place(anchor=NE, relx=1.0, relheight=1, height=-delta_y)
+
+		else :
+			# y scrollbar needed
+			delta_x = self.yscrollbar.winfo_reqwidth()
+			w = w-delta_x
+			if w < bb_x1-bb_x0 :
+				# x scrollbar needed
+				delta_y = self.xscrollbar.winfo_reqheight()
+				self.xscrollbar.place(anchor=SW, rely=1.0, relwidth=1, width=-delta_x)
+				h = h - delta_y
+			else :
+				delta_y = 0
+				self.xscrollbar.place_forget()
+
+			self.yscrollbar.place(anchor=NE, relx=1.0, relheight=1, height=-delta_y)
+		return w, h
+
+	def draw(self) :
+		self.draw_items()
+		w, h = self.draw_scrollbars()
+		self.canvas.place(width=w, height=h)
+
+	def delete_all(self) :
+		self.canvas.delete("all")
+		self.items = []
+		self.draw()
+
+
+def add_cb() :
+	global my_display, n, root
+	my_display.add("hello world %d" % n)
+	n = n+1
+
+# main part of the program
+root = Tk()
+n = 0
+my_display = display(root, width=100, height=100)
+button_panel = Frame(root)
+button_panel.pack()
+add_button = Button(button_panel, command=add_cb, text="add")
+add_button.pack(side=LEFT)
+del_button = Button(button_panel, command=my_display.delete_all, text="delete all")
+del_button.pack(side=LEFT)
+
+my_display.pack(expand=1, fill=BOTH)
+
+root.mainloop()
