@@ -1,16 +1,17 @@
-import 	sys,os,re,
-from subprocesses import call, POPEN, STDOUT, PIPE, STDERR
-import Tkinter as tk
+from ImageProcessing import WriteToImage as WTI
+from USBinterface import SERIALPORT as SP
+from DataAnalysis import Compute as op
+import argparse
 
+parser = argparse.ArgumentParser(description='Take data and process it')
+parser.add_argument('port', metavar='N', type=str, nargs='1',
+                   help='an integer for the accumulator')
 
-def main():
-	graphical_analysis = op(data)
-	new_image = WriteToImage(graphical_analysis)
+args = parser.parse_args()
+print args.accumulate(args.integers)
+
+data = SP(args)
+
+graphical_analysis = op.operate(data=data,piezo_conversion=value,)
+new_image = WTI(graphical_analysis)
 	# send to GUI Application and display accordingly
-	root = tk.Tk()
-	app = Application(path="Data_Graph.gif",master=root)
-	mods = app.master
-
-	# Modify GUI features
-	mods.title("GUI - Scanning Fabry-Perot Interferometer")
-	app.mainloop()

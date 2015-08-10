@@ -13,10 +13,3 @@ class Compute():
 		# Calculate the wavelength based on the distance between the peaks.
 		graphical_analysis = {'Intensity': intensity,'Distance': distance, 'Wavelength': wavelength}
 		return graphical_analysis
-
-	def acquire(self,protocol):
-		# Get address for usb port and subsequent protocols
-
-
-
-		# and acquire the incoming data from the slave

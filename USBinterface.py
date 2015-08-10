@@ -1,12 +1,8 @@
 import serial
 
-class SERIALPORT():
-	def __init__(self,port):
-		self.ser = serial.Serial(port, 9600)
-		self.port()
-
-	def port(self):
-		return self.ser
+def SERIALPORT(self,port):
+	self.ser = serial.Serial(port, 9600)
+	return self.ser
 
 
 
