@@ -1,0 +1,9 @@
+import sys,os,re
+from PIL import Image as IM
+
+class WriteToImage():
+    def __init__(self,data):
+        self.xaxis = 29 # pixels/volt
+        self.yaxis = 116 # pixels/volt
+
+

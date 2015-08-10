@@ -1,14 +1,14 @@
-class Macintosh():
-	def __init__(self):
-		# This function uses the specified protocols for MacOSX serial communication via USB
-		
-class Windows78():
-	def __init__(self):
-		# This function uses the specified protocols for Windows 7 and 8 serial communication via USB
+import serial
 
-class Linux():
-	def __init__(self):
-			# This function uses the specified protocols for Linux (Ubuntu and Debian) serial communication via USB
+class SERIALPORT():
+	def __init__(self,port):
+		self.ser = serial.Serial(port, 9600)
+		self.port()
+
+	def port(self):
+		return self.ser
+
+
 
 
 
