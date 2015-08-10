@@ -1,33 +1,34 @@
 import sys,os,re
+from GUIErrors import *
 from PIL import Image as IM
 
 class WriteToImage():
-    def __init__(self,data):
-        self.xaxis = 29 # pixels/volt
-        self.yaxis = 116 # pixels/volt
+    def __init__(self,data,image):
+        self.image = image
+        DI = DetermineImage(image=self.image)
+        self.zero = DI.zero
+        self.scale = DI.scale
+
+    def pixle_coordinates(self):
 
 class DetermineImage():
     def __init__(self,image):
         self.loc = None
+        self.width = None
+        self.height = None
         self.zero = []
         self.photo=image
         self.im = IM.open(self.photo)
         self.pix = self.im.load()
-        self.find_edge()
 
     def find_edge(self):
         dim = self.im.size
-        height = dim[0]
-        width = dim[1]
+        self.height = dim[0]
+        self.width = dim[1]
         # Find vertical edge
-        for x in range(0,width):
-            for y in range(0,height):
-                color = self.pix[y,x]
-                self.loc = (y,x)
-                if color is not 0:
-                    check = self.confirm(axis='y')
-                    if check:
-                        self.zero[0] = [y,x]
+        self.cycle_y()
+        # Find horizontal edge
+        self.cycle_x()
 
     def confirm(self,axis):
         if axis == 'y':
@@ -46,5 +47,32 @@ class DetermineImage():
             isaxis = True
         return isaxis
 
+    def cycle_y(self):
+        try:
+            for x in range(0,self.width):
+                for y in range(0,self.height):
+                    color = self.pix[y,x]
+                    self.loc = (y,x)
+                    if color is not 0:
+                        check = self.confirm(axis='y')
+                        if check:
+                            self.zero[0] = [y,x]
+            raise ImageError('No Axis Found')
+        finally:
+            print "Try another image please :)"
 
+    def cycle_x(self):
+        try:
+            for y in range(0,self.width):
+                for x in range(0,self.height):
+                    color = self.pix[y,x]
+                    self.loc = (y,x)
+                    if color is not 0:
+                        check = self.confirm(axis='y')
+                        if check:
+                            self.zero[0] = [y,x]
+            raise ImageError('No Axis Found')
+        finally:
+            print "Try another image please :)"
 
+    def find_scale(self):
