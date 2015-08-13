@@ -1,7 +1,6 @@
 class Compute():
 	def __init__(self,master=None):
 		self.operate(data={},piezo_conversion=0)
-		self.acquire(protocol=None)
 
 	def operate(self,data,piezo_conversion):
 		# Do math stuff and create dictionaries to use

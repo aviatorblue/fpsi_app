@@ -1,27 +1,33 @@
 from ImageProcessing import WriteToImage as WTI
+import sys,os,re
+from time import strftime as date, sleep
+from subprocess import call, Popen
+from PIL import Image as IM, ImageTk as ITK
+from Tkinter import *
 from USBinterface import SERIALPORT as SP
 from DataAnalysis import Compute as op
+from GUI import Application as App, Error as ERR
 from GUIErrors import *
 import argparse,sys,os,re
 
 def main():
 	try:
-		parser = argparse.ArgumentParser(description='Take data and process it')
-		parser.add_argument('port', metavar='N', type=str, nargs='1',
-    	               help='an integer for the accumulator')
-		args = parser.parse_args()
+		# Set Qualifiers
+		root = Tk()
+		app = App(master=root)
+		mods = app.master
 
-		data = SP(args)
+		# Modify GUI features
+		mods.title("GUI - Scanning Fabry-Perot Interferometer")
+		while True:
+			app.update()
+			data = SP()
 		graphical_analysis = op.operate(data=data,piezo_conversion=value,)
 		new_image = WTI(graphical_analysis)
 		# send to GUI Application and display accordingly
 
 	except IOError as io:
 		print "No Bueno, Me Amigo"
-
-	except DataError as de:
-
-
 
 if __name__ == "__main__":
 	main()
