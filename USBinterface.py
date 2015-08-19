@@ -1,8 +1,8 @@
 import serial
 
-def SERIALPORT(self,port):
-	self.ser = serial.Serial(port, 9600)
-	return self.ser
+def SERIALPORT():
+	ser = serial.Serial("/dev/tty.usbmodemfd121", 9600)
+	ser.write("1")
 
 
 
