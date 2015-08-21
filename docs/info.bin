@@ -1,1 +1,1 @@
-Port: COM4
+Port: /dev/tty.usbmodemfd121
