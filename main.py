@@ -2,16 +2,19 @@
 import sys,os,re
 from time import strftime as date, sleep
 from subprocess import call, Popen
-from PIL import Image as IM, ImageTk as ITK
+#from PIL import Image as IM, ImageTk as ITK
 from Tkinter import *
 from USBinterface import SERIALPORT as SP
 #from DataAnalysis import Compute as op
 #from GUIErrors import *
+from Screen import Dimensions as dim
 import argparse,sys,os,re
 
+
 class Application(Frame):
-	def __init__(self,master=None,port=None,data=None,go=None):
-		Frame.__init__(self,master,width=1000,height=400,bd=1)
+	def __init__(self,master=None,port=None,data=None,go=None,height=None,
+                        width=None):
+		Frame.__init__(self,master,width=width,height=height,bd=1)
 		self.image = "Graph_Update.gif"
 		#self.error = Error(master=root)
 		self.port = port
@@ -50,7 +53,7 @@ class Application(Frame):
 	def updateImage(self):
 		iframe2 = Frame(self,bd=2,relief=SUNKEN)
 
-		self.canvas = Canvas(iframe2, width=1054, height=628, bg="white")
+		self.canvas = Canvas(iframe2, bg="white")
 		self.filename = PhotoImage(file=self.image)
 		image = self.canvas.create_image(0, 0, anchor=NW, image=self.filename)
 		self.canvas.pack(side="top")
@@ -125,7 +128,10 @@ class Error(Frame):
 def main():
 	try:
 		# Set Qualifiers
-		app = Application(master=root)
+		d = dim()
+		output = d.get_dim()
+		app = Application(master=root,
+                                  width=output["width"],height=output["height"])
 		mods = app.master
 
 		# Modify GUI features
