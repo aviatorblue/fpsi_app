@@ -130,8 +130,9 @@ def main():
 		# Set Qualifiers
 		d = dim()
 		output = d.get_dim()
+		print output
 		app = Application(master=root,
-                                  width=output["width"],height=output["height"])
+                                  width=output['width'],height=output['height'])
 		mods = app.master
 
 		# Modify GUI features

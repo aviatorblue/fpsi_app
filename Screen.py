@@ -9,8 +9,8 @@ class Dimensions():
         
     def get_hw(self):
         # This is where it gets the height and width
-        self.width = 1024
-        self.height = 968
+        self.width = 1
+        self.height = 0.2
 
     def get_dim(self):
         dim = {}

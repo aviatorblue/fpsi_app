@@ -1,6 +1,6 @@
 import sys,os,re
 from GUIErrors import *
-from PIL import Image as IM
+#from PIL import Image as IM
 
 class WriteToImage():
     def __init__(self,data,image):
