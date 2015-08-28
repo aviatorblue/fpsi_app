@@ -9,12 +9,16 @@ class Dimensions():
         
     def get_hw(self):
         # This is where it gets the height and width
-        self.width = 1
-        self.height = 0.2
+        self.width = 1000
+        self.height = 400
+        self.imageh = 676
+        self.imagew = 1067
 
     def get_dim(self):
         dim = {}
         dim["width"] = self.width
         dim["height"] = self.height
+        dim["imageh"] = self.imageh
+        dim["imagew"] = self.imagew
 
         return dim

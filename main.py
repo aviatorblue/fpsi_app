@@ -13,8 +13,10 @@ import argparse,sys,os,re
 
 class Application(Frame):
 	def __init__(self,master=None,port=None,data=None,go=None,height=None,
-                        width=None):
+                        width=None, imageh=None, imagew=None):
 		Frame.__init__(self,master,width=width,height=height,bd=1)
+		self.width = imagew
+		self.height = imageh
 		self.image = "Graph_Update.gif"
 		#self.error = Error(master=root)
 		self.port = port
@@ -53,7 +55,7 @@ class Application(Frame):
 	def updateImage(self):
 		iframe2 = Frame(self,bd=2,relief=SUNKEN)
 
-		self.canvas = Canvas(iframe2, bg="white")
+		self.canvas = Canvas(iframe2, width=self.width, height=self.height, bg="white")
 		self.filename = PhotoImage(file=self.image)
 		image = self.canvas.create_image(0, 0, anchor=NW, image=self.filename)
 		self.canvas.pack(side="top")
@@ -132,7 +134,8 @@ def main():
 		output = d.get_dim()
 		print output
 		app = Application(master=root,
-                                  width=output['width'],height=output['height'])
+                                  width=output['width'],height=output['height'],
+								  imagew=output['imagew'],imageh=output['imageh'])
 		mods = app.master
 
 		# Modify GUI features
